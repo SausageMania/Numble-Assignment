@@ -1,16 +1,16 @@
 import React from "react";
-import { ISetting } from "App";
+import { IGameInfo } from "App";
 
 interface IProps {
-  setting: ISetting;
+  gameInfo: IGameInfo;
 }
 
 const Menu: React.FC<IProps> = (props) => {
-  const { setting } = props;
+  const { gameInfo } = props;
   return (
     <span>
-      스테이지: {setting.stage}, 남은 시간: {setting.time}, 점수:{" "}
-      {setting.score}
+      스테이지: {gameInfo.stage}, 남은 시간: {gameInfo.time}, 점수:{" "}
+      {gameInfo.score}
     </span>
   );
 };

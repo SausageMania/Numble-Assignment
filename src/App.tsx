@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Menu, Game } from "./components";
 import styled from "@emotion/styled";
-export interface ISetting {
+export interface IGameInfo {
   stage: number;
   time: number;
   score: number;
@@ -20,10 +20,11 @@ export interface IRectInfo {
 const RootContainer = styled.div`
   width: 400px;
   height: 400px;
+  margin: 6px;
 `;
 
 const App: React.FC = () => {
-  const [setting, setSetting] = useState<ISetting>({
+  const [gameInfo, setGameInfo] = useState<IGameInfo>({
     time: 15,
     stage: 1,
     score: 0,
@@ -40,9 +41,9 @@ const App: React.FC = () => {
   });
 
   const resetOnlyGameOver = useCallback(() => {
-    if (setting.time === 0) {
-      alert(`GAME OVER!\n스테이지: ${setting.stage}, 점수: ${setting.score}`);
-      setSetting({ time: 15, stage: 1, score: 0 });
+    if (gameInfo.time === 0) {
+      alert(`GAME OVER!\n스테이지: ${gameInfo.stage}, 점수: ${gameInfo.score}`);
+      setGameInfo({ time: 15, stage: 1, score: 0 });
       setRectInfo({
         filter: 330,
         color: {
@@ -53,14 +54,15 @@ const App: React.FC = () => {
         answer: Math.floor(Math.random() * 3),
       });
     }
-  }, [setting]);
+  }, [gameInfo]);
 
   const selectAnswer = () => {
-    const newLevel = setting.stage + 1;
-    const newScore = setting.score + Math.pow(setting.stage, 3) * setting.time;
+    const newLevel = gameInfo.stage + 1;
+    const newScore =
+      gameInfo.score + Math.pow(gameInfo.stage, 3) * gameInfo.time;
     const totalRectCount = Math.pow(Math.round((newLevel + 0.5) / 2) + 1, 2);
 
-    setSetting({ stage: newLevel, time: 15, score: newScore });
+    setGameInfo({ stage: newLevel, time: 15, score: newScore });
     setRectInfo({
       filter: rectInfo.filter + 0.5,
       color: {
@@ -73,14 +75,14 @@ const App: React.FC = () => {
   };
 
   const selectWrong = () => {
-    const newTime = setting.time - 3;
-    setSetting({ ...setting, time: newTime > 0 ? newTime : 0 });
+    const newTime = gameInfo.time - 3;
+    setGameInfo({ ...gameInfo, time: newTime > 0 ? newTime : 0 });
   };
 
   useEffect(() => {
     resetOnlyGameOver();
     const tick = setTimeout(() => {
-      setSetting((setting) => ({ ...setting, time: setting.time - 1 }));
+      setGameInfo((setting) => ({ ...setting, time: setting.time - 1 }));
     }, 1000);
 
     return () => clearTimeout(tick);
@@ -88,10 +90,10 @@ const App: React.FC = () => {
 
   return (
     <RootContainer>
-      <Menu setting={setting} />
+      <Menu gameInfo={gameInfo} />
       <Game
         rectInfo={rectInfo}
-        level={setting.stage}
+        stage={gameInfo.stage}
         selectAnswer={selectAnswer}
         selectWrong={selectWrong}
       />

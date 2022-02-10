@@ -4,13 +4,13 @@ import { IRectInfo } from "App";
 
 interface IProps {
   rectInfo: IRectInfo;
-  level: number;
+  stage: number;
   selectAnswer: () => void;
   selectWrong: () => void;
 }
 
 const Game: React.FC<IProps> = (props) => {
-  const { rectInfo, level, selectAnswer, selectWrong } = props;
+  const { rectInfo, stage, selectAnswer, selectWrong } = props;
 
   const onClickHandle: (isAnswer: boolean) => void = (isAnswer) => {
     if (isAnswer) selectAnswer();
@@ -18,8 +18,8 @@ const Game: React.FC<IProps> = (props) => {
   };
 
   return (
-    <RootContainer row={Math.round((level + 0.5) / 2) + 1}>
-      {[...Array(Math.pow(Math.round((level + 0.5) / 2) + 1, 2))].map(
+    <RootContainer row={Math.round((stage + 0.5) / 2) + 1}>
+      {[...Array(Math.pow(Math.round((stage + 0.5) / 2) + 1, 2))].map(
         (_, idx) => (
           <RectItem
             key={idx}
